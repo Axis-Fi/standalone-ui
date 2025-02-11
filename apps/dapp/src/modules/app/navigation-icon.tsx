@@ -9,6 +9,7 @@ export function NavigationIcon() {
       to="/"
     >
       <div className="flex gap-x-2">
+        {/*@ts-expect-error - constants trip the compiler*/}
         {LOGO_URL === "" ? (
           <AxisIcon />
         ) : (

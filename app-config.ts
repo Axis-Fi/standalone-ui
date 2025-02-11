@@ -1,14 +1,15 @@
 //Auction Configuration
 export const AUCTION_CHAIN_ID = 84532;
 export const AUCTION_TOKEN_ADDRESS =
-  "0x0c5CD8F8e7D6995A67568f87969332f5C902e520".toLowerCase();
+  "0xfca744cb4dee4776ba6b78d59013328d2cd17cc6".toLowerCase();
 
 // App Configuration
 export const PRODUCTION_URL = "app.axis.finance";
 export const TESTNET_URL = "testnet.axis.finance";
 
 //Assets
-export const LOGO_URL = "";
+export const LOGO_URL =
+  "https://pbs.twimg.com/profile_images/1882911714397798400/R9G17iK7_400x400.jpg";
 
 //Socials
 export const DISCORD = "https://discord.gg/tx9CrvPZWF";
