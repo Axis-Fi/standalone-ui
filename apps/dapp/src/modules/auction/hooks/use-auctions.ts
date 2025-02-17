@@ -12,6 +12,7 @@ import {
   AUCTION_CHAIN_ID,
   AUCTION_TOKEN_ADDRESS,
 } from "../../../../../../app-config";
+import { overrideAllowlist } from "src/allowlist/utils";
 
 export type AuctionsResult = {
   data: Auction[];
@@ -62,7 +63,11 @@ export function useAuctions(): AuctionsResult {
         chainId,
       };
 
-      return preparedAuction as Auction;
+      const auctionWithOverridenAllowlist = overrideAllowlist(
+        preparedAuction as Auction,
+      );
+
+      return auctionWithOverridenAllowlist;
     })
     .sort(sortAuction);
 
