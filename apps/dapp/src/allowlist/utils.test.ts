@@ -2,10 +2,15 @@ import { describe, it, expect } from "vitest";
 import { overrideAllowlist } from "./utils";
 import { getBatchAuctionMock } from "src/stories/mocks/batch-auction";
 
+const SAMPLE_ALLOWLIST = [
+  ["0x0000000000000000000000000000000000000000", "300000000000000000"],
+  ["0x0000000000000000000000000000000000000001", "1777777700000000000"],
+];
+
 describe("Allowlist Overrides", () => {
   it("overrides an allowlist if file is present", () => {
     const mockAuction = getBatchAuctionMock();
-    const result = overrideAllowlist(mockAuction);
+    const result = overrideAllowlist(mockAuction, SAMPLE_ALLOWLIST);
 
     const allowlist = result?.info?.allowlist;
 

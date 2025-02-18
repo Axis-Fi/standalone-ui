@@ -11,9 +11,13 @@ export function getAllowlistByAuctionId(id: Auction["id"]) {
 /**
  * Overrides an auction allowlist property with a local allowlist file
  */
-export function overrideAllowlist(auction: Auction): Auction {
+export function overrideAllowlist(
+  auction: Auction,
+  allowlist?: Array<string[]>,
+): Auction {
+  if (!allowlist || allowlist.length === 0) return auction;
+
   const _auction = auction;
-  const allowlist = getAllowlistByAuctionId(auction.id);
 
   if (!allowlist) return auction;
 
