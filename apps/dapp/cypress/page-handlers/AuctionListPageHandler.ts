@@ -11,14 +11,8 @@ export class AuctionListPageHandler {
   getAuctionCards() {
     return cy.get('[data-cy="auction-card"]');
   }
-
-  getFirstAuctionCard() {
-    return this.getAuctionCards().first();
-  }
-
   getAuctionCardByAuctionId(id: string) {
-    //TODO: implement
-    return id;
+    return this.getAuctionCards().filter(`[data-auction-id="${id}"]`);
   }
 
   getViewAuctionButton(cy: Cypress.Chainable<JQuery<HTMLElement>>) {

@@ -39,7 +39,10 @@ export function AuctionBidInputSingle({
     form.formState.isValid && isFinite(Number(formAmountOut));
 
   return (
-    <div className="text-foreground flex flex-col gap-y-2">
+    <div
+      id="auction-single-input"
+      className="text-foreground flex flex-col gap-y-2"
+    >
       <div className="bg-secondary flex justify-between rounded-sm pt-1">
         <div className="">
           <FormField

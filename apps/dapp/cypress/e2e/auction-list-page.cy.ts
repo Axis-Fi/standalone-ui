@@ -1,12 +1,15 @@
-//import { stubGetAuctionLotsQuery } from "../../src/mocks/stubs/get-auction-lots-query";
+import { stubGetAuctionByTokenAddressQuery } from "../../src/mocks/stubs/get-auction-by-token-address-query";
 import { AuctionListPageHandler } from "../page-handlers/AuctionListPageHandler";
 import { AuctionPageHandler } from "../page-handlers/AuctionPageHandler";
+import { AUCTION_TOKEN_ADDRESS } from "../../../../app-config";
 
-//TODO: Fix chain name mismatch and use the id to fetch instead of first
-//const auctions = stubGetAuctionLotsQuery({ chain: "base-sepolia" });
+const [firstAuction] = stubGetAuctionByTokenAddressQuery({
+  baseTokenAddress: AUCTION_TOKEN_ADDRESS,
+}).batchAuctionLots;
 
-describe("Fixed Price Batch", () => {
+describe("Auction List Page", () => {
   const auctionListPage = new AuctionListPageHandler();
+  const auctionPage = new AuctionPageHandler();
 
   it("Should load the root page", () => {
     auctionListPage.visit();
@@ -20,11 +23,10 @@ describe("Fixed Price Batch", () => {
   it("Should enter an auction page", () => {
     auctionListPage.visit();
 
-    const firstAuction = auctionListPage.getAuctionCards().first();
-
-    auctionListPage.getViewAuctionButton(firstAuction).click();
-
-    const auctionPage = new AuctionPageHandler();
+    const auctionCard = auctionListPage.getAuctionCardByAuctionId(
+      firstAuction.id,
+    );
+    auctionListPage.getViewAuctionButton(auctionCard).click();
 
     auctionPage.getRoot().should("exist");
   });

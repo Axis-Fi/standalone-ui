@@ -1,16 +1,26 @@
-import { AuctionListPageHandler } from "../page-handlers/AuctionListPageHandler";
 import { AuctionPageHandler } from "../page-handlers/AuctionPageHandler";
+import { stubGetAuctionByTokenAddressQuery } from "../../src/mocks/stubs/get-auction-by-token-address-query";
+import { AUCTION_TOKEN_ADDRESS } from "../../../../app-config";
+
+//TODO: improve this
+const TEST_CHAIN_ID = 84532;
+
+const [firstAuction] = stubGetAuctionByTokenAddressQuery({
+  baseTokenAddress: AUCTION_TOKEN_ADDRESS,
+}).batchAuctionLots;
 
 describe("Fixed Price Batch Page", () => {
-  it("Should render the auction page", () => {
-    const listPage = new AuctionListPageHandler();
-    listPage.visit();
-
-    const auctionCard = listPage.getFirstAuctionCard();
-    listPage.getViewAuctionButton(auctionCard).click();
-
+  describe("Status: Live", () => {
     const auctionPage = new AuctionPageHandler();
 
-    auctionPage.getRoot().should("exist");
+    it("Should render the auction page", () => {
+      auctionPage.visitAuction(TEST_CHAIN_ID, +firstAuction.lotId);
+      auctionPage.getRoot().should("exist");
+    });
+
+    it("Should have a bid card", () => {
+      auctionPage.visitAuction(TEST_CHAIN_ID, +firstAuction.lotId);
+      auctionPage.getBidCard().should("exist");
+    });
   });
 });
