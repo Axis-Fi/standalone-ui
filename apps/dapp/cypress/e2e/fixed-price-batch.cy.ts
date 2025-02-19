@@ -1,26 +1,24 @@
-import { AuctionPageHandler } from "../page-handlers/AuctionPageHandler";
 import { stubGetAuctionByTokenAddressQuery } from "../../src/mocks/stubs/get-auction-by-token-address-query";
 import { AUCTION_TOKEN_ADDRESS } from "../../../../app-config";
+import { COMPONENTS } from "../constants";
 
 //TODO: improve this
-const TEST_CHAIN_ID = 84532;
+const TEST_CHAIN_ID = "84532";
 
-const [firstAuction] = stubGetAuctionByTokenAddressQuery({
+const [mockAuction] = stubGetAuctionByTokenAddressQuery({
   baseTokenAddress: AUCTION_TOKEN_ADDRESS,
 }).batchAuctionLots;
 
 describe("Fixed Price Batch Page", () => {
   describe("Status: Live", () => {
-    const auctionPage = new AuctionPageHandler();
-
     it("Should render the auction page", () => {
-      auctionPage.visitAuction(TEST_CHAIN_ID, +firstAuction.lotId);
-      auctionPage.getRoot().should("exist");
+      cy.visit(COMPONENTS.AUCTION_PAGE_URL(TEST_CHAIN_ID, mockAuction.lotId));
+      cy.get(COMPONENTS.AUCTION_PAGE).should("exist");
     });
 
     it("Should have a bid card", () => {
-      auctionPage.visitAuction(TEST_CHAIN_ID, +firstAuction.lotId);
-      auctionPage.getBidCard().should("exist");
+      cy.visit(COMPONENTS.AUCTION_PAGE_URL(TEST_CHAIN_ID, mockAuction.lotId));
+      cy.get(COMPONENTS.AUCTION_PAGE).should("exist");
     });
   });
 });

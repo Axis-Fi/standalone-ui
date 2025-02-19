@@ -1,33 +1,31 @@
 import { stubGetAuctionByTokenAddressQuery } from "../../src/mocks/stubs/get-auction-by-token-address-query";
-import { AuctionListPageHandler } from "../page-handlers/AuctionListPageHandler";
-import { AuctionPageHandler } from "../page-handlers/AuctionPageHandler";
 import { AUCTION_TOKEN_ADDRESS } from "../../../../app-config";
+import { COMPONENTS } from "../constants";
+
+const BASE_URL = "http://localhost:5173";
 
 const [firstAuction] = stubGetAuctionByTokenAddressQuery({
   baseTokenAddress: AUCTION_TOKEN_ADDRESS,
 }).batchAuctionLots;
 
 describe("Auction List Page", () => {
-  const auctionListPage = new AuctionListPageHandler();
-  const auctionPage = new AuctionPageHandler();
-
   it("Should load the root page", () => {
-    auctionListPage.visit();
+    cy.visit(BASE_URL);
   });
 
   it("Should load multiple auctions", () => {
-    auctionListPage.visit();
-    auctionListPage.getAuctionCards().should("have.length", 2);
+    cy.visit(BASE_URL);
+    cy.get(COMPONENTS.AUCTION_CARDS).should("have.length", 2);
   });
 
   it("Should enter an auction page", () => {
-    auctionListPage.visit();
+    cy.visit(BASE_URL);
 
-    const auctionCard = auctionListPage.getAuctionCardByAuctionId(
-      firstAuction.id,
-    );
-    auctionListPage.getViewAuctionButton(auctionCard).click();
+    cy.get(COMPONENTS.AUCTION_CARDS)
+      .filter(COMPONENTS.AUCTION_CARD(firstAuction.id))
+      .find(COMPONENTS.AUCTION_CARD_BUTTON)
+      .click();
 
-    auctionPage.getRoot().should("exist");
+    cy.get(COMPONENTS.AUCTION_PAGE).should("exist");
   });
 });
