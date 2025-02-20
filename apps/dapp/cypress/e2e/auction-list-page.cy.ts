@@ -1,8 +1,6 @@
 import { stubGetAuctionByTokenAddressQuery } from "../../src/mocks/stubs/get-auction-by-token-address-query";
 import { AUCTION_TOKEN_ADDRESS } from "../../../../app-config";
-import { COMPONENTS } from "../constants";
-
-const BASE_URL = "http://localhost:5173";
+import { URLS, COMPONENTS } from "../constants";
 
 const [firstAuction] = stubGetAuctionByTokenAddressQuery({
   baseTokenAddress: AUCTION_TOKEN_ADDRESS,
@@ -10,16 +8,16 @@ const [firstAuction] = stubGetAuctionByTokenAddressQuery({
 
 describe("Auction List Page", () => {
   it("Should load the root page", () => {
-    cy.visit(BASE_URL);
+    cy.visit(URLS.HOME);
   });
 
   it("Should load multiple auctions", () => {
-    cy.visit(BASE_URL);
+    cy.visit(URLS.HOME);
     cy.get(COMPONENTS.AUCTION_CARDS).should("have.length", 2);
   });
 
   it("Should enter an auction page", () => {
-    cy.visit(BASE_URL);
+    cy.visit(URLS.HOME);
 
     cy.get(COMPONENTS.AUCTION_CARDS)
       .filter(COMPONENTS.AUCTION_CARD(firstAuction.id))
