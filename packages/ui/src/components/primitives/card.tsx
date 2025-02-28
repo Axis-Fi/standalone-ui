@@ -92,21 +92,25 @@ type CardProps = {
 const Card = React.forwardRef<
   HTMLDivElement,
   Omit<React.HTMLAttributes<HTMLDivElement>, "title"> & CardProps
->((props, ref) => {
+>(({ title, headerRightElement, tooltip, children, ...props }, ref) => {
   return (
-    <CardRoot ref={ref} className={cn("transition-all", props.className)}>
-      {(props.title || props.headerRightElement) && (
+    <CardRoot
+      ref={ref}
+      className={cn("transition-all", props.className)}
+      {...props}
+    >
+      {(title || headerRightElement) && (
         <CardHeader>
-          <Tooltip content={props.tooltip}>
+          <Tooltip content={tooltip}>
             <div className="flex items-center">
-              <CardTitle className="inline-block">{props.title}</CardTitle>
-              {props.tooltip && <InfoCircledIcon className="ml-1" />}
+              <CardTitle className="inline-block">{title}</CardTitle>
+              {tooltip && <InfoCircledIcon className="ml-1" />}
             </div>
           </Tooltip>
-          {props.headerRightElement}
+          {headerRightElement}
         </CardHeader>
       )}
-      <CardContent className="h-full">{props.children}</CardContent>
+      <CardContent className="h-full">{children}</CardContent>
     </CardRoot>
   );
 });

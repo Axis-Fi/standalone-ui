@@ -1,15 +1,10 @@
 import type { GetAuctionLotsQuery } from "@axis-finance/subgraph-client";
-import { AUCTION_CHAIN_ID } from "../../../../../app-config";
-import { chains } from "@axis-finance/env";
-import { environment } from "utils/environment";
 
 export const stubGetAuctionByTokenAddressQuery = (overrides: {
   baseTokenAddress: GetAuctionLotsQuery["batchAuctionLots"][0]["baseToken"]["address"];
 }): GetAuctionLotsQuery => {
   const { baseTokenAddress } = overrides;
-  const chain = chains
-    .activeChains(environment.isTestnet)
-    .find((c) => c.id === AUCTION_CHAIN_ID)?.name as string;
+  const chain = "base-sepolia";
 
   return {
     batchAuctionLots: [
