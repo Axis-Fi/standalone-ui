@@ -9,18 +9,16 @@ const baseChainId = "8453";
 const LAUNCH_ID =
   Cypress.env("VITE_TESTNET") === "true" ? blastSepoliaChainId : baseChainId;
 
-const URLS = {
-  HOME: `${BASE_URL}/#/`,
-  REFERRALS: `${BASE_URL}/#/refer`,
-  LAUNCH: `${BASE_URL}/#/${LAUNCH_ID}/0`,
+/* URLS */
+const HOME = `${BASE_URL}/#/`;
+const REFERRALS = `${BASE_URL}/#/refer`;
+const LAUNCH = `${BASE_URL}/#/${LAUNCH_ID}/0`;
+const FAUCET = `${BASE_URL}/#/faucet`;
+const DEPLOY = `${BASE_URL}/#/deploy`;
+const AUCTION_PAGE_URL = (chainId: string, lotId: string) =>
+  HOME + chainId + "/" + lotId;
 
-  /** TESTNET ONLY PAGES */
-  FAUCET: `${BASE_URL}/#/faucet`,
-  DEPLOY: `${BASE_URL}/#/deploy`,
-  AUCTION_PAGE_URL: (chainId: string, lotId: string) =>
-    BASE_URL + "/" + chainId + "/" + lotId,
-} as const;
-
+/** Component ids and data props*/
 const COMPONENTS = {
   //Auction List Page
   AUCTION_CARDS: "[data-cy='auction-card']",
@@ -31,4 +29,14 @@ const COMPONENTS = {
   AUCTION_BID_CARD: "#auction-bid-card",
 };
 
-export { URLS, COMPONENTS };
+/**Dapp routes*/
+export const URLS = {
+  HOME,
+  REFERRALS,
+  LAUNCH,
+  FAUCET,
+  DEPLOY,
+  AUCTION_PAGE_URL,
+};
+
+export { COMPONENTS };

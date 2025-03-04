@@ -1,4 +1,5 @@
 import { defineConfig } from "cypress";
+import { setupTestClient } from "./cypress/plugins/test-client";
 
 export default defineConfig({
   env: process.env,
@@ -14,6 +15,8 @@ export default defineConfig({
           return null;
         },
       });
+
+      setupTestClient(on, config);
     },
   },
 });
