@@ -9,14 +9,28 @@ const baseChainId = "8453";
 const LAUNCH_ID =
   Cypress.env("VITE_TESTNET") === "true" ? blastSepoliaChainId : baseChainId;
 
+const HOME = `${BASE_URL}/#`;
+
 const URLS = {
-  HOME: `${BASE_URL}/#/`,
-  REFERRALS: `${BASE_URL}/#/refer`,
-  LAUNCH: `${BASE_URL}/#/${LAUNCH_ID}/0`,
+  HOME,
+  REFERRALS: `${HOME}/refer`,
+  LAUNCH: `${HOME}/${LAUNCH_ID}/0`,
 
   /** TESTNET ONLY PAGES */
-  FAUCET: `${BASE_URL}/#/faucet`,
-  DEPLOY: `${BASE_URL}/#/deploy`,
+  FAUCET: `${HOME}/faucet`,
+  DEPLOY: `${HOME}/deploy`,
+  AUCTION_PAGE_URL: (chainId: string, lotId: string) =>
+    HOME + "/" + chainId + "/" + lotId,
 } as const;
 
-export { URLS };
+const COMPONENTS = {
+  //Auction List Page
+  AUCTION_CARDS: "[data-cy='auction-card']",
+  AUCTION_CARD: (id: string) => `[data-auction-id="${id}"]`,
+  AUCTION_CARD_BUTTON: "[data-cy='auction-card-button']",
+  //Auction Page
+  AUCTION_PAGE: "#__AXIS_LAUNCH_PAGE__",
+  AUCTION_BID_CARD: "#auction-bid-card",
+};
+
+export { URLS, COMPONENTS };
