@@ -9,16 +9,19 @@ const [mockAuction] = stubGetAuctionByTokenAddressQuery({
   baseTokenAddress: AUCTION_TOKEN_ADDRESS,
 }).batchAuctionLots;
 
-describe("Fixed Price Batch Page", () => {
+describe("Price Discovery Auction Page", () => {
   describe("Status: Live", () => {
-    it("Should render the auction page", () => {
+    beforeEach(() => {
       cy.visit(URLS.AUCTION_PAGE_URL(TEST_CHAIN_ID, mockAuction.lotId));
+    });
+    it("Should render the auction page", () => {
       cy.get(COMPONENTS.AUCTION_PAGE).should("exist");
     });
 
     it("Should have a bid card", () => {
-      cy.visit(URLS.AUCTION_PAGE_URL(TEST_CHAIN_ID, mockAuction.lotId));
-      cy.get(COMPONENTS.AUCTION_PAGE).should("exist");
+      cy.get(COMPONENTS.AUCTION_BID_CARD).should("exist");
     });
+
+    it("Should be able to approve balance", () => {});
   });
 });

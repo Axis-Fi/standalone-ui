@@ -392,6 +392,7 @@ export function AuctionPurchase({ auction, ...props }: AuctionPurchaseProps) {
               <RequiresChain chainId={auction.chainId} className="mt-4">
                 <div className="mt-4 w-full">
                   <Button
+                    data-testid="bid-submit-button"
                     className="w-full"
                     disabled={
                       isWaiting ||

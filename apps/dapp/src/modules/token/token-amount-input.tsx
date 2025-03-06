@@ -95,6 +95,7 @@ export const TokenAmountInput = React.forwardRef<
           </Text>
           {!disableMaxButton && (
             <Button
+              data-testid="max-amount-button"
               disabled={disabled}
               uppercase
               variant="secondary"

@@ -31,6 +31,11 @@ const COMPONENTS = {
   //Auction Page
   AUCTION_PAGE: "#__AXIS_LAUNCH_PAGE__",
   AUCTION_BID_CARD: "#auction-bid-card",
+  AMOUNT_INPUT: "[data-testid='bid-amount-input']",
+  PRICE_INPUT: "[data-testid='bid-price-input']",
+  BID_SUBMIT_BUTTON: "[data-testid='bid-submit-button']",
+  TX_DIALOG_TRIGGER_BUTTON: "[data-testid='tx-dialog-trigger-button']",
+  TX_DIALOG_CONFIRM_BUTTON: "[data-testid='tx-dialog-confirm-button']",
 };
 
 export { URLS, COMPONENTS };

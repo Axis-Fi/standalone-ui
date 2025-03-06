@@ -91,7 +91,11 @@ export function TransactionDialog({
     <DialogRoot open={open} onOpenChange={onOpenChange}>
       {props.triggerContent && (
         <DialogTrigger className="w-full max-w-lg" disabled={props.disabled}>
-          <Button className="w-full max-w-sm" disabled={props.disabled}>
+          <Button
+            data-testid="tx-dialog-trigger-button"
+            className="w-full max-w-sm"
+            disabled={props.disabled}
+          >
             {props.triggerContent}
           </Button>
         </DialogTrigger>
@@ -104,6 +108,7 @@ export function TransactionDialog({
         <DialogFooter className="flex">
           {showFooter && (
             <Button
+              data-testid="tx-dialog-confirm-button"
               disabled={props.disabled}
               size="md"
               type="submit"
