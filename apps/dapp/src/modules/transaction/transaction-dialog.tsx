@@ -100,8 +100,10 @@ export function TransactionDialog({
           </Button>
         </DialogTrigger>
       )}
-      <DialogContent className="bg-surface">
-        <DialogHeader className="text-lg">{title}</DialogHeader>
+      <DialogContent data-testid="tx-dialog" className="bg-surface">
+        <DialogHeader data-testid="tx-dialog-title" className="text-lg">
+          {title}
+        </DialogHeader>
 
         <Component error={error} hash={props.hash} chainId={props.chainId} />
 

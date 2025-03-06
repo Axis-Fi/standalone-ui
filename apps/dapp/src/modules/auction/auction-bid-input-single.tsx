@@ -52,6 +52,7 @@ export function AuctionBidInputSingle({
               <FormItemWrapperSlim>
                 <TokenAmountInput
                   {...field}
+                  data-testid="bid-amount-input"
                   disabled={disabled}
                   label="Spend Amount"
                   message={

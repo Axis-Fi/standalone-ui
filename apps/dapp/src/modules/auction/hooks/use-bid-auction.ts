@@ -118,18 +118,18 @@ export function useBidAuction(
     }
 
     // Cache the bid locally, to prevent subgraph update delays not returning the user's bid
-    optimisticUpdate(
-      queryClient,
-      queryKey,
-      (cachedAuction: GetBatchAuctionLotQuery) =>
-        auctionCache.insertBid(
-          cachedAuction,
-          bidId,
-          bidderAddress!,
-          amountIn,
-          amountOut,
-        ),
-    );
+    // optimisticUpdate(
+    //   queryClient,
+    //   queryKey,
+    //   (cachedAuction: GetBatchAuctionLotQuery) =>
+    //     auctionCache.insertBid(
+    //       cachedAuction,
+    //       bidId,
+    //       bidderAddress!,
+    //       amountIn,
+    //       amountOut,
+    //     ),
+    // );
 
     // Consumer can pass optional callback to be executed after the bid is successful
     onSuccess?.();

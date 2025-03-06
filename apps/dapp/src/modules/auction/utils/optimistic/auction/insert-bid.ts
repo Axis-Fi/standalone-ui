@@ -54,6 +54,7 @@ const insertBid = (
 ): GetBatchAuctionLotQuery => {
   return {
     ...cachedAuction,
+
     batchAuctionLot: {
       ...cachedAuction.batchAuctionLot!,
       bids: cachedAuction.batchAuctionLot!.bids.concat(

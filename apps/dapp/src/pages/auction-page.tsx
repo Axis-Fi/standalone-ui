@@ -50,6 +50,7 @@ export default function AuctionPage(props: { auction?: Auction }) {
     props.auction ??
     data.find((a) => a.lotId === lotId && a.chainId === Number(chainId));
 
+  console.log({ auction });
   const { isConnected, chainId: connectedChainId } = useAccount();
   const { switchChain } = useSwitchChain();
 

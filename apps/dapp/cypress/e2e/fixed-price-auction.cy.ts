@@ -9,19 +9,30 @@ const [mockAuction] = stubGetAuctionByTokenAddressQuery({
   baseTokenAddress: AUCTION_TOKEN_ADDRESS,
 }).batchAuctionLots;
 
-describe("Price Discovery Auction Page", () => {
+describe("Fixed Price Auction", () => {
   describe("Status: Live", () => {
     beforeEach(() => {
       cy.visit(URLS.AUCTION_PAGE_URL(TEST_CHAIN_ID, mockAuction.lotId));
-    });
-    it("Should render the auction page", () => {
-      cy.get(COMPONENTS.AUCTION_PAGE).should("exist");
+      cy.connectWallet();
     });
 
-    it("Should have a bid card", () => {
-      cy.get(COMPONENTS.AUCTION_BID_CARD).should("exist");
-    });
+    it("Should be able to bid", () => {
+      cy.get(COMPONENTS.AMOUNT_INPUT).type("1000");
 
-    it("Should be able to approve balance", () => {});
+      cy.get(COMPONENTS.BID_SUBMIT_BUTTON).click();
+
+      cy.wait(5000);
+
+      cy.get(COMPONENTS.BID_SUBMIT_BUTTON).should("have.text", "BID").click();
+
+      cy.get(COMPONENTS.TX_DIALOG_CONFIRM_BUTTON).click();
+
+      cy.wait(5000);
+
+      cy.get(COMPONENTS.TX_DIALOG_TITLE).should(
+        "have.text",
+        "Transaction Confirmed",
+      );
+    });
   });
 });
