@@ -1,6 +1,6 @@
 import { stubGetAuctionByTokenAddressQuery } from "../../src/mocks/stubs/get-auction-by-token-address-query";
 import { AUCTION_TOKEN_ADDRESS } from "../../../../app-config";
-import { COMPONENTS, URLS } from "../constants";
+import { COMPONENTS, TRANSACTION_TIMEOUT_MS, URLS } from "../constants";
 
 //TODO: improve this
 const TEST_CHAIN_ID = "84532";
@@ -21,18 +21,15 @@ describe("Fixed Price Auction", () => {
 
       cy.get(COMPONENTS.BID_SUBMIT_BUTTON).click();
 
-      cy.wait(5000);
-
-      cy.get(COMPONENTS.BID_SUBMIT_BUTTON).should("have.text", "BID").click();
+      cy.get(COMPONENTS.BID_SUBMIT_BUTTON, { timeout: TRANSACTION_TIMEOUT_MS })
+        .should("have.text", "BID")
+        .click();
 
       cy.get(COMPONENTS.TX_DIALOG_CONFIRM_BUTTON).click();
 
-      cy.wait(5000);
-
-      cy.get(COMPONENTS.TX_DIALOG_TITLE).should(
-        "have.text",
-        "Transaction Confirmed",
-      );
+      cy.get(COMPONENTS.TX_DIALOG_TITLE, {
+        timeout: TRANSACTION_TIMEOUT_MS,
+      }).should("have.text", "Transaction Confirmed");
     });
   });
 });

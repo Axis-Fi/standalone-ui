@@ -40,4 +40,7 @@ const COMPONENTS = {
   TX_DIALOG_CONFIRM_BUTTON: "[data-testid='tx-dialog-confirm-button']",
 };
 
-export { URLS, COMPONENTS };
+/** Default Timeout in milliseconds */
+const TRANSACTION_TIMEOUT_MS = 10000;
+
+export { URLS, COMPONENTS, TRANSACTION_TIMEOUT_MS };
