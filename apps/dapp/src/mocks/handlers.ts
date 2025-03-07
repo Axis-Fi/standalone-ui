@@ -23,11 +23,9 @@ export const handlers = [
       data: stubGetBatchAuctionLotQuery({ id, lotId, chain }),
     });
   }),
-  graphql.query("getBatchAuctionLotsByBaseTokenAddress", ({ variables }) => {
-    const baseTokenAddress = variables?.baseTokenAddress as string;
-
+  graphql.query("getBatchAuctionLotsByBaseTokenAddress", () => {
     return HttpResponse.json({
-      data: stubGetAuctionByTokenAddressQuery({ baseTokenAddress }),
+      data: stubGetAuctionByTokenAddressQuery(),
     });
   }),
 ];

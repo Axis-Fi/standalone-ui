@@ -6,9 +6,9 @@ import {
   URLS,
 } from "../constants";
 
-const [mockAuction] = stubGetAuctionByTokenAddressQuery().batchAuctionLots;
+const mockAuction = stubGetAuctionByTokenAddressQuery().batchAuctionLots[1];
 
-describe("Fixed Price Auction", () => {
+describe("Price Discovery Auction", () => {
   describe("Status: Live", () => {
     beforeEach(() => {
       cy.visit(URLS.AUCTION_PAGE_URL(TEST_CHAIN_ID, mockAuction.lotId));
@@ -17,6 +17,7 @@ describe("Fixed Price Auction", () => {
 
     it("Should be able to bid", () => {
       cy.get(COMPONENTS.AMOUNT_INPUT).type("1000");
+      cy.get(COMPONENTS.PRICE_INPUT).type("11");
 
       cy.get(COMPONENTS.BID_SUBMIT_BUTTON).click();
 

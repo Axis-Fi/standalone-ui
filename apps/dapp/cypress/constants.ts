@@ -42,5 +42,6 @@ const COMPONENTS = {
 
 /** Default Timeout in milliseconds */
 const TRANSACTION_TIMEOUT_MS = 10000;
+const TEST_CHAIN_ID = "84532";
 
-export { URLS, COMPONENTS, TRANSACTION_TIMEOUT_MS };
+export { URLS, COMPONENTS, TRANSACTION_TIMEOUT_MS, TEST_CHAIN_ID };
