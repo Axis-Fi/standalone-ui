@@ -39,7 +39,10 @@ export function AuctionBidInputSingle({
     form.formState.isValid && isFinite(Number(formAmountOut));
 
   return (
-    <div className="text-foreground flex flex-col gap-y-2">
+    <div
+      id="auction-single-input"
+      className="text-foreground flex flex-col gap-y-2"
+    >
       <div className="bg-secondary flex justify-between rounded-sm pt-1">
         <div className="">
           <FormField
@@ -49,6 +52,7 @@ export function AuctionBidInputSingle({
               <FormItemWrapperSlim>
                 <TokenAmountInput
                   {...field}
+                  data-testid="bid-amount-input"
                   disabled={disabled}
                   label="Spend Amount"
                   message={

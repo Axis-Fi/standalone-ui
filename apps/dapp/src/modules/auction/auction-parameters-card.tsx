@@ -27,6 +27,9 @@ type AuctionCardProps = React.HTMLAttributes<HTMLDivElement> & {
 export function AuctionParameterCard({ auction, ...props }: AuctionCardProps) {
   return (
     <Card
+      id={auction?.id}
+      data-cy="auction-card"
+      data-auction-id={auction?.id}
       className={cn(
         "border-surface-outline group size-full overflow-hidden ",
         props.className,
@@ -104,6 +107,8 @@ function AuctionCardDetails(
       <div className={cn("mt-4 flex items-end justify-center")}>
         <Link className={"flex self-end"} to={detailsPageUrl}>
           <Button
+            data-cy="auction-card-button"
+            data-auction-id={`auction-visit-button-$${props.auction.id}`}
             disabled={props.disabledViewButton}
             size="lg"
             className={"self-end uppercase transition-all "}
