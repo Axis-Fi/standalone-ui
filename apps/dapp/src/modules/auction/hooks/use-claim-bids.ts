@@ -5,9 +5,9 @@ import {
   useWaitForTransactionReceipt,
   useWriteContract,
 } from "wagmi";
-import { useAuction } from "./use-auction";
 import { useSdk } from "@axis-finance/sdk/react";
 import { Auction } from "@axis-finance/types";
+import { useSafeRefetch } from "./use-safe-refetch";
 
 export function useClaimBids(auction: Auction) {
   const { address: userAddress } = useAccount();
@@ -39,10 +39,9 @@ export function useClaimBids(auction: Auction) {
 
   const claimTx = useWriteContract();
   const claimReceipt = useWaitForTransactionReceipt({ hash: claimTx.data });
-  const { refetch: refetchAuction } = useAuction(
-    auction.chainId,
-    auction.lotId,
-  );
+  const refetchAuction = useSafeRefetch([
+    "getBatchAuctionLotsByBaseTokenAddress",
+  ]);
 
   // When someone claims their bids, refetch the auction from the subgraph so the dapp has the latest data
   // TODO: we should optimistically update the auction bids here instead
@@ -68,12 +67,5 @@ export function useClaimBids(auction: Auction) {
     (m) => m.isError,
   )?.error;
 
-  return {
-    handleClaim,
-    claimCall,
-    claimReceipt,
-    claimTx,
-    isWaiting,
-    error,
-  };
+  return { handleClaim, claimCall, claimReceipt, claimTx, isWaiting, error };
 }

@@ -1,5 +1,5 @@
 import type { Auction } from "@axis-finance/types";
-import { useLaunchByAddressQuery } from "@axis-finance/sdk/react";
+import { useTokenLaunchesQuery } from "@axis-finance/sdk/react";
 import { getAuctionStatus } from "modules/auction/utils/get-auction-status";
 import { sortAuction } from "modules/auction/utils/sort-auctions";
 import { formatAuctionTokens } from "modules/auction/utils/format-tokens";
@@ -29,19 +29,17 @@ export const getAuctionsQueryKey = (chainId: number) =>
  * Fetches all auctions for the chain and token address specified in app-config
  */
 export function useAuctions(): AuctionsResult {
-  const { data, isLoading, isSuccess, isRefetching } = useLaunchByAddressQuery(
+  const { data, isLoading, isSuccess, isRefetching } = useTokenLaunchesQuery(
     AUCTION_CHAIN_ID,
     AUCTION_TOKEN_ADDRESS,
   );
 
   // Refetch auctions if the cache is stale
-  const refetch = useSafeRefetch(["auctions"]);
+  const refetch = useSafeRefetch(["getBatchAuctionLotsByBaseTokenAddress"]);
 
   // Filter out cancelled auctions
   const filteredAuctions =
-    data?.batchAuctionLots.filter(
-      (auction) => getAuctionStatus(auction) !== "cancelled",
-    ) ?? [];
+    data?.filter((auction) => getAuctionStatus(auction) !== "cancelled") ?? [];
 
   const { getToken } = useTokenLists();
 

@@ -8,10 +8,10 @@ import { trimCurrency } from "utils/currency";
 import { useVestingTokenId } from "modules/auction/hooks/use-vesting-tokenid";
 import { useVestingRedeemable } from "modules/auction/hooks/use-vesting-redeemable";
 import { useDerivativeModule } from "modules/auction/hooks/use-derivative-module";
-import { useAuction } from "modules/auction/hooks/use-auction";
 import { ClaimVestingDervivativeTxn } from "./claim-vesting-derivative-txn";
 import { RedeemVestedTokensTxn } from "./redeem-vested-tokens-txn";
 import { BidOutcome } from "./bid-outcome";
+import { useSafeRefetch } from "../hooks/use-safe-refetch";
 
 const calculateVestingProgress = (start?: number, end?: number): number => {
   if (start == null || end == null) return 0;
@@ -70,10 +70,9 @@ export function VestingCard({ auction }: PropsWithAuction) {
       derivativeModuleAddress: vestingModuleAddress,
     });
 
-  const { refetch: refetchAuction } = useAuction(
-    auction.chainId,
-    auction.lotId,
-  );
+  const refetchAuction = useSafeRefetch([
+    "getBatchAuctionLotsByBaseTokenAddress",
+  ]);
 
   const redeemedAmount =
     auction.linearVesting?.redemptions

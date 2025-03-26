@@ -62,19 +62,13 @@ export function AuctionCard({ auction, ...props }: AuctionCardProps) {
 }
 
 function AuctionCardDetails(
-  props: PropsWithAuction & {
-    isGrid?: boolean;
-    disabledViewButton?: boolean;
-  },
+  props: PropsWithAuction & { isGrid?: boolean; disabledViewButton?: boolean },
 ) {
   const isEMP = props.auction.auctionType === AuctionType.SEALED_BID;
   const isFPB = props.auction.auctionType === AuctionType.FIXED_PRICE_BATCH;
   const hasCurator = !!props.auction.curator && props.auction.curatorApproved;
 
-  const isRegistrationLaunch = props.auction.status === "registering";
-
-  const detailsPageUrl =
-    getAuctionPath(props.auction) + (isRegistrationLaunch ? "/register" : "");
+  const detailsPageUrl = getAuctionPath(props.auction);
 
   return (
     <div
@@ -162,9 +156,7 @@ function AuctionCardDetails(
                 "absolute bottom-0 right-0 mb-3 mr-3 opacity-0 group-hover:opacity-100",
             )}
           >
-            {props.auction.status === "registering"
-              ? "Register now"
-              : "View Launch"}
+            View Launch
           </Button>
         </Link>
       </div>

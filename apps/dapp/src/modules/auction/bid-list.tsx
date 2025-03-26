@@ -15,7 +15,6 @@ import {
 import { TransactionDialog } from "modules/transaction/transaction-dialog";
 import { LoadingIndicator } from "modules/app/loading-indicator";
 import React from "react";
-import { useAuction } from "./hooks/use-auction";
 import { getAuctionHouse } from "utils/contracts";
 import { useBidIndex } from "./hooks/use-bid-index";
 import { format } from "date-fns";
@@ -24,6 +23,7 @@ import { CSVDownloader } from "components/csv-downloader";
 import { arrayToCSV } from "utils/csv";
 import { PriceCell } from "./cells/PriceCell";
 import { AmountInCell } from "./cells/AmountInCell";
+import { useSafeRefetch } from "./hooks/use-safe-refetch";
 
 export const bidListColumnHelper = createColumnHelper<
   BatchAuctionBid & { auction: Auction }
@@ -121,27 +121,21 @@ const screens = {
   },
 };
 
-type BidListProps = PropsWithAuction & {
-  address?: `0x${string}`;
-};
+type BidListProps = PropsWithAuction & { address?: `0x${string}` };
 
 export function BidList(props: BidListProps) {
   const { address } = useAccount();
 
-  const userBids = useStorageBids({
-    auctionId: props.auction.id,
-    address,
-  });
+  const userBids = useStorageBids({ auctionId: props.auction.id, address });
 
   const auction = props.auction as BatchAuction;
 
   const auctionHouse = getAuctionHouse(props.auction);
   const encryptedBids = auction?.bids ?? [];
 
-  const { refetch: refetchAuction } = useAuction(
-    props.auction.chainId,
-    props.auction.lotId,
-  );
+  const refetchAuction = useSafeRefetch([
+    "getBatchAuctionLotsByBaseTokenAddress",
+  ]);
 
   const refund = useWriteContract();
   const refundReceipt = useWaitForTransactionReceipt({ hash: refund.data });
@@ -169,11 +163,7 @@ export function BidList(props: BidListProps) {
                 bid.bidder.toLowerCase() === address?.toLowerCase(),
             ) ?? {};
 
-          return {
-            ...bid,
-            ...storedBid,
-            auction: props.auction,
-          };
+          return { ...bid, ...storedBid, auction: props.auction };
         }) ?? [],
     [props.auction, address, onlyUserBids],
   );

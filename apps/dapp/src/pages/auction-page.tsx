@@ -31,7 +31,6 @@ const statuses: Record<
   AuctionStatus,
   (props: PropsWithAuction) => React.ReactNode
 > = {
-  registering: () => null, // Registration state is not handled in this component, but in auction-registering.tsx
   created: AuctionCreated,
   live: AuctionLive,
   concluded: EncryptedMarginalPriceAuctionConcluded,
@@ -115,10 +114,7 @@ export default function AuctionPage(props: { auction?: Auction }) {
 export function AuctionPageView({
   auction,
   ...props
-}: React.PropsWithChildren<{
-  auction: Auction;
-  isAuctionLoading?: boolean;
-}>) {
+}: React.PropsWithChildren<{ auction: Auction; isAuctionLoading?: boolean }>) {
   const bannerUrl = BANNER_URL ?? getLinkUrl("projectBanner", auction);
 
   if (bannerUrl) {
