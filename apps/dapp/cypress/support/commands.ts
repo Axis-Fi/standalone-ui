@@ -9,3 +9,8 @@ Cypress.Commands.add("shouldNotRenderErrorPage", () => {
 Cypress.Commands.add("shouldRenderPageWithId", (id) => {
   cy.get(`#${id}`, { timeout: 10000 }).should("exist");
 });
+
+Cypress.Commands.add("connectWallet", () => {
+  cy.get("[data-testid='connect-wallet']").click();
+  cy.get("[data-testid='rk-wallet-option-injected']").click();
+});

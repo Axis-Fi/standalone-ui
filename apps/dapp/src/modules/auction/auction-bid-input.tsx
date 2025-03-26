@@ -60,6 +60,7 @@ export function AuctionBidInput({
               <FormItemWrapperSlim>
                 <TokenAmountInput
                   {...field}
+                  data-testid="bid-amount-input"
                   disabled={disabled}
                   label="Spend Amount"
                   balance={formatUnits(balance, auction.quoteToken.decimals)}
@@ -116,6 +117,7 @@ export function AuctionBidInput({
               <FormItemWrapperSlim>
                 <TokenAmountInput
                   {...field}
+                  data-testid="bid-price-input"
                   label="Bid Price"
                   tokenLabel={`${auction.quoteToken.symbol} per ${auction.baseToken.symbol}`}
                   disabled={disabled}

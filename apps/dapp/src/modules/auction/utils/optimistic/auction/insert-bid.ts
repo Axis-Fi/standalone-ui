@@ -1,19 +1,24 @@
 import { formatUnits } from "viem";
-import type { Address, BatchAuctionBid } from "@axis-finance/types";
-import type { GetBatchAuctionLotQuery } from "@axis-finance/subgraph-client";
+import type {
+  Address,
+  BatchAuction,
+  BatchAuctionBid,
+  NonNullSubgraphAuction,
+} from "@axis-finance/types";
+import type { GetBatchAuctionLotsByBaseTokenAddressQuery } from "@axis-finance/subgraph-client";
 
 /**
  * Creates a fake bid entry on an auction.
  * Used after the bid transaction succeeds to mitigate subgraph update delays.
  */
 const createOptimisticBid = (
-  cachedAuction: GetBatchAuctionLotQuery,
+  cachedAuction: NonNullSubgraphAuction,
   bidId: string,
   bidder: Address,
   amountIn: bigint,
   amountOut: bigint,
 ): BatchAuctionBid => {
-  const auction = cachedAuction.batchAuctionLot!;
+  const auction = cachedAuction;
   const quoteTokenDecimals = Number(auction.quoteToken.decimals);
   const amountInDecimal = Number(formatUnits(amountIn, quoteTokenDecimals));
   const amountOutDecimal = Number(
@@ -46,21 +51,27 @@ const createOptimisticBid = (
  * Takes the current subgraph cache of an auction and inserts a new bid it.
  */
 const insertBid = (
-  cachedAuction: GetBatchAuctionLotQuery,
+  cachedAuctions: GetBatchAuctionLotsByBaseTokenAddressQuery,
   bidId: string,
   bidder: Address,
   amountIn: bigint,
   amountOut: bigint,
-): GetBatchAuctionLotQuery => {
+  targetAuction: BatchAuction,
+): GetBatchAuctionLotsByBaseTokenAddressQuery => {
+  const auction = cachedAuctions.batchAuctionLots.find(
+    (a) => a.id === targetAuction.id,
+  )!;
+
+  const updated = {
+    ...auction,
+    bids: auction!.bids.concat(
+      createOptimisticBid(auction!, bidId, bidder, amountIn, amountOut),
+    ),
+  };
+
   return {
-    ...cachedAuction,
-    batchAuctionLot: {
-      ...cachedAuction.batchAuctionLot!,
-      bids: cachedAuction.batchAuctionLot!.bids.concat(
-        createOptimisticBid(cachedAuction, bidId, bidder, amountIn, amountOut),
-      ),
-    },
-  } satisfies GetBatchAuctionLotQuery;
+    batchAuctionLots: [...cachedAuctions.batchAuctionLots, updated],
+  } satisfies GetBatchAuctionLotsByBaseTokenAddressQuery;
 };
 
 export { insertBid };
