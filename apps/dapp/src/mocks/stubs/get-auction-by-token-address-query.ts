@@ -1,6 +1,12 @@
 import type { GetAuctionLotsQuery } from "@axis-finance/subgraph-client";
+import { getUnixTime, addDays } from "date-fns";
 
 export const stubGetAuctionByTokenAddressQuery = (): GetAuctionLotsQuery => {
+  const startDate = new Date();
+  const endDate = addDays(startDate, 7);
+  const startTimestamp = getUnixTime(startDate).toString();
+  const conclusionTimestamp = getUnixTime(endDate).toString();
+
   return {
     batchAuctionLots: [
       {
@@ -16,7 +22,7 @@ export const stubGetAuctionByTokenAddressQuery = (): GetAuctionLotsQuery => {
         createdTransactionHash:
           "0x96f0b28dd7a5ac68b5546f97a58a652fa81dac8c88363e368aba939b222bd0c7",
         capacityInitial: "1000000",
-        start: "1741286700",
+        start: startTimestamp,
         info: {
           key: "FPBA-84532_0x0c5CD8F8e7D6995A67568f87969332f5C902e520_1741286700000",
           name: "Testing",
@@ -33,7 +39,7 @@ export const stubGetAuctionByTokenAddressQuery = (): GetAuctionLotsQuery => {
             },
           ],
         },
-        conclusion: "1741377600",
+        conclusion: conclusionTimestamp,
         auctionType: "FPBA",
         seller: "0x62a665d3f9fc9a968dc35a789122981d9109349a",
         derivativeType: null,
@@ -101,7 +107,7 @@ export const stubGetAuctionByTokenAddressQuery = (): GetAuctionLotsQuery => {
         createdTransactionHash:
           "0x83b7d149afaacb7b0dffbd827fd040d4a899ad7fa5066be7e1ab2ab45091be0f",
         capacityInitial: "200000",
-        start: "1741356712",
+        start: startTimestamp,
         info: {
           key: "EMPA-84532_0x0c5CD8F8e7D6995A67568f87969332f5C902e520_1741356712208",
           name: "Testoor",
@@ -118,7 +124,7 @@ export const stubGetAuctionByTokenAddressQuery = (): GetAuctionLotsQuery => {
             },
           ],
         },
-        conclusion: "1741445700",
+        conclusion: conclusionTimestamp,
         auctionType: "EMPA",
         seller: "0x62a665d3f9fc9a968dc35a789122981d9109349a",
         derivativeType: null,
