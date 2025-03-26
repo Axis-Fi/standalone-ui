@@ -2,10 +2,7 @@ import React, { useRef } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Address, formatUnits, fromHex, toHex, zeroAddress } from "viem";
 import { useAccount } from "wagmi";
-import type {
-  GetBatchAuctionLotQuery,
-  GetBatchAuctionLotsByBaseTokenAddressQuery,
-} from "@axis-finance/subgraph-client";
+import type { GetBatchAuctionLotsByBaseTokenAddressQuery } from "@axis-finance/subgraph-client";
 import { AuctionType } from "@axis-finance/types";
 import { useBid } from "@axis-finance/sdk/react";
 import { useAllowance } from "loaders/use-allowance";
@@ -38,10 +35,6 @@ export function useBidAuction(
   if (!auction) throw new Error(`Unable to find auction ${id}`);
 
   const queryClient = useQueryClient();
-  const queryKey = [
-    "getBatchAuctionLotsByBaseTokenAddress",
-    { baseTokenAddress: auction.baseToken.address },
-  ];
   const { address: bidderAddress } = useAccount();
   const referrer = useReferrer();
 
@@ -123,6 +116,11 @@ export function useBidAuction(
       });
     }
 
+    const queryKey = [
+      "getBatchAuctionLotsByBaseTokenAddress",
+      { baseTokenAddress: auction.baseToken.address },
+    ];
+
     // Cache the bid locally, to prevent subgraph update delays not returning the user's bid
     optimisticUpdate(
       queryClient,
@@ -148,7 +146,6 @@ export function useBidAuction(
     bidReceipt,
     bidderAddress,
     queryClient,
-    queryKey,
     storeBidLocally,
     bidTx,
     onSuccess,

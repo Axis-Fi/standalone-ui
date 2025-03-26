@@ -3,14 +3,13 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import type { Auction, AuctionId, BatchAuction } from "@axis-finance/types";
+import type { Auction, BatchAuction } from "@axis-finance/types";
 import { useEffect, useRef } from "react";
 import {
   useSimulateContract,
   useWaitForTransactionReceipt,
   useWriteContract,
 } from "wagmi";
-import { getAuctionQueryKey } from "modules/auction/hooks/use-auction";
 import { getAuctionHouse, getContractsByModuleType } from "utils/contracts";
 import { Hex } from "viem";
 import type { GetBatchAuctionLotQuery } from "@axis-finance/subgraph-client";
@@ -25,8 +24,6 @@ export const useDecryptBids = (auction: BatchAuction) => {
   const auctionHouse = getAuctionHouse(auction);
   //Fixed priced auctions dont require decryption
   const emp = getContractsByModuleType(auction);
-
-  const queryKey = getAuctionQueryKey(auction.id as AuctionId);
 
   const params = deriveParamsFromAuction(auction);
   const privateKeyQuery = useQuery({
@@ -79,6 +76,7 @@ export const useDecryptBids = (auction: BatchAuction) => {
 
   const queryClient = useQueryClient();
   const decryptTxnSucceeded = useRef(false);
+  const { refetch: refetchHints, isRefetching: isRefetchingHints } = hintsQuery;
 
   useEffect(() => {
     if (decryptTxnSucceeded.current || !decryptReceipt.isSuccess) {
@@ -87,9 +85,14 @@ export const useDecryptBids = (auction: BatchAuction) => {
 
     decryptTxnSucceeded.current = true;
 
-    if (!hintsQuery.isRefetching) {
-      hintsQuery.refetch();
+    if (!isRefetchingHints) {
+      refetchHints();
     }
+
+    const queryKey = [
+      "getBatchAuctionLotsByBaseTokenAddress",
+      { baseTokenAddress: auction.baseToken.address },
+    ];
 
     /** Optimistically update the auction status to "decrypted" */
     optimisticUpdate(
@@ -100,10 +103,10 @@ export const useDecryptBids = (auction: BatchAuction) => {
     );
   }, [
     decryptReceipt.isSuccess,
-    hintsQuery,
-    privateKeyQuery,
+    isRefetchingHints,
+    refetchHints,
     queryClient,
-    queryKey,
+    auction.baseToken.address,
   ]);
 
   const error = [
@@ -124,8 +127,5 @@ export const useDecryptBids = (auction: BatchAuction) => {
 };
 
 function deriveParamsFromAuction(auction: Auction) {
-  return {
-    xChainId: auction.chainId,
-    lotId: Number(auction.lotId),
-  };
+  return { xChainId: auction.chainId, lotId: Number(auction.lotId) };
 }

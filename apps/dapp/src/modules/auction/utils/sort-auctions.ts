@@ -1,7 +1,6 @@
 import { AuctionStatus, Auction } from "@axis-finance/types";
 
 const status: { [key in AuctionStatus]: number } = {
-  registering: 0,
   live: 1,
   created: 2,
   concluded: 3,

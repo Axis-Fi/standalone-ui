@@ -23,22 +23,24 @@ export const stubGetAuctionByTokenAddressQuery = (): GetAuctionLotsQuery => {
           "0x96f0b28dd7a5ac68b5546f97a58a652fa81dac8c88363e368aba939b222bd0c7",
         capacityInitial: "1000000",
         start: startTimestamp,
-        info: {
-          key: "FPBA-84532_0x0c5CD8F8e7D6995A67568f87969332f5C902e520_1741286700000",
-          name: "Testing",
-          description: "chad e2e testing",
-          tagline: "Finally E2E",
-          links: [
-            {
-              linkId: "payoutTokenLogo",
-              url: "https://i0.wp.com/liveforlivemusic.com/wp-content/uploads/2014/10/aphex-twin-logo.jpg",
-            },
-            {
-              linkId: "projectBanner",
-              url: "https://lh4.googleusercontent.com/proxy/sINDdQmXIOhTjVT5hWn0Qs5JKFC1C-nmGV4KrsKCe9SkzDzPQHYbwibmPz8_VyWJmH1JODcXw36_hlRStEWmUhZCxEPiH1aR-ELsyCGrrHLxrlgltblIlHLfs3ScjQ",
-            },
-          ],
-        },
+        info: [
+          {
+            key: "FPBA-84532_0x0c5CD8F8e7D6995A67568f87969332f5C902e520_1741286700000",
+            name: "Testing",
+            description: "chad e2e testing",
+            tagline: "Finally E2E",
+            links: [
+              {
+                linkId: "payoutTokenLogo",
+                url: "https://i0.wp.com/liveforlivemusic.com/wp-content/uploads/2014/10/aphex-twin-logo.jpg",
+              },
+              {
+                linkId: "projectBanner",
+                url: "https://lh4.googleusercontent.com/proxy/sINDdQmXIOhTjVT5hWn0Qs5JKFC1C-nmGV4KrsKCe9SkzDzPQHYbwibmPz8_VyWJmH1JODcXw36_hlRStEWmUhZCxEPiH1aR-ELsyCGrrHLxrlgltblIlHLfs3ScjQ",
+              },
+            ],
+          },
+        ],
         conclusion: conclusionTimestamp,
         auctionType: "FPBA",
         seller: "0x62a665d3f9fc9a968dc35a789122981d9109349a",
@@ -108,22 +110,24 @@ export const stubGetAuctionByTokenAddressQuery = (): GetAuctionLotsQuery => {
           "0x83b7d149afaacb7b0dffbd827fd040d4a899ad7fa5066be7e1ab2ab45091be0f",
         capacityInitial: "200000",
         start: startTimestamp,
-        info: {
-          key: "EMPA-84532_0x0c5CD8F8e7D6995A67568f87969332f5C902e520_1741356712208",
-          name: "Testoor",
-          description: "testing sealed bid",
-          tagline: "Testing stuff",
-          links: [
-            {
-              linkId: "payoutTokenLogo",
-              url: "https://avatars.githubusercontent.com/u/158601375?s=200&v=4",
-            },
-            {
-              linkId: "projectBanner",
-              url: "https://cdn.dribbble.com/users/2984251/screenshots/9704093/media/b3fdc6ffea4f1868710b6c51cb1b2171.png?resize=400x0",
-            },
-          ],
-        },
+        info: [
+          {
+            key: "EMPA-84532_0x0c5CD8F8e7D6995A67568f87969332f5C902e520_1741356712208",
+            name: "Testoor",
+            description: "testing sealed bid",
+            tagline: "Testing stuff",
+            links: [
+              {
+                linkId: "payoutTokenLogo",
+                url: "https://avatars.githubusercontent.com/u/158601375?s=200&v=4",
+              },
+              {
+                linkId: "projectBanner",
+                url: "https://cdn.dribbble.com/users/2984251/screenshots/9704093/media/b3fdc6ffea4f1868710b6c51cb1b2171.png?resize=400x0",
+              },
+            ],
+          },
+        ],
         conclusion: conclusionTimestamp,
         auctionType: "EMPA",
         seller: "0x62a665d3f9fc9a968dc35a789122981d9109349a",

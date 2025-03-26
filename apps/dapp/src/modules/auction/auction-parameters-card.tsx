@@ -51,18 +51,11 @@ export function AuctionParameterCard({ auction, ...props }: AuctionCardProps) {
 }
 
 function AuctionCardDetails(
-  props: PropsWithAuction & {
-    isGrid?: boolean;
-    disabledViewButton?: boolean;
-  },
+  props: PropsWithAuction & { isGrid?: boolean; disabledViewButton?: boolean },
 ) {
   const isEMP = props.auction.auctionType === AuctionType.SEALED_BID;
   const isFPB = props.auction.auctionType === AuctionType.FIXED_PRICE_BATCH;
-
-  const isRegistrationLaunch = props.auction.status === "registering";
-
-  const detailsPageUrl =
-    getAuctionPath(props.auction) + (isRegistrationLaunch ? "/register" : "");
+  const detailsPageUrl = getAuctionPath(props.auction);
 
   const isLive = props.auction.status === "live";
   return (

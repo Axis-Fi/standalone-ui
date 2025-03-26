@@ -2,18 +2,14 @@ import { ToggleProvider, TooltipProvider } from "@repo/ui";
 import { BlockchainProvider } from "./blockchain-provider";
 import { OriginSdkProvider } from "@axis-finance/sdk/react";
 import { createSdk } from "@axis-finance/sdk";
-import { getCloakServer, getMetadataServer } from "@axis-finance/env";
+import { getCloakServer, getCuratorServer } from "@axis-finance/env";
 import { DialogProvider } from "./dialog-provider";
 import { environment } from "utils/environment";
 
 const sdk = createSdk({
   environment: environment.current,
-  cloak: {
-    url: getCloakServer(environment.current).url,
-  },
-  metadata: {
-    url: getMetadataServer(environment.current).url,
-  },
+  cloak: { url: getCloakServer(environment.current).url },
+  curator: { url: getCuratorServer(environment.current).url },
 });
 
 type ProviderProps = React.PropsWithChildren<{

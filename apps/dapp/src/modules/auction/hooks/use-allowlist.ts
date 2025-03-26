@@ -7,18 +7,11 @@ import {
   zeroAddress,
   erc20Abi,
 } from "viem";
-import { UseQueryResult } from "@tanstack/react-query";
 import { useAccount, useReadContract, useReadContracts } from "wagmi";
 import { StandardMerkleTree } from "@openzeppelin/merkle-tree";
-import {
-  GetAuctionAllowlistQuery,
-  useGetAuctionAllowlistQuery,
-} from "@axis-finance/subgraph-client";
 import { Auction, CallbacksType } from "@axis-finance/types";
-import { axisContracts, deployments } from "@axis-finance/deployments";
-import { fetchParams } from "utils/fetch";
+import { axisContracts } from "@axis-finance/deployments";
 import { getCallbacksType } from "../utils/get-callbacks-type";
-import { isAllowlistCallback } from "../utils/auction-details";
 
 export type AllowlistResult = {
   canBid: boolean;
@@ -36,28 +29,8 @@ export function useAllowlist(auction: Auction): AllowlistResult {
 
   // If the auction has a custom callback it could be an allowlist so give it the benefit of the doubt
   const callbacksType = getCallbacksType(auction);
-  const isCustomCallback = callbacksType === CallbacksType.CUSTOM;
-  // Determine if the allowlist is defined in the external data
-  const shouldFetchAllowList =
-    isAllowlistCallback(callbacksType) || isCustomCallback;
 
-  // Fetch allow list for this auction from the subgraph
-  const {
-    data: auctionWithAllowlist,
-  }: UseQueryResult<GetAuctionAllowlistQuery> = useGetAuctionAllowlistQuery(
-    {
-      endpoint: deployments[auction.chainId!].subgraphURL,
-      fetchParams,
-    },
-    { id: auction.id! },
-    {
-      enabled: !!auction?.chainId && !!auction?.id && shouldFetchAllowList,
-    },
-  );
-  const allowlist =
-    auctionWithAllowlist?.batchAuctionLot?.info?.allowlist.map(
-      (list) => list.values,
-    ) ?? [];
+  const allowlist = auction?.info?.allowlist?.map((list) => list.values) ?? [];
 
   // Check if the callback type is an allowlist, if not return default values
   const isMerkle =
@@ -102,6 +75,7 @@ export function useAllowlist(auction: Auction): AllowlistResult {
     args: [],
     query: { enabled: isBaseline },
   });
+
   const baselineLotIdMatches = baselineLotId == parseUnits(auction.lotId, 0);
 
   // Query the amount the user has already spent from the contract
@@ -127,9 +101,7 @@ export function useAllowlist(auction: Auction): AllowlistResult {
     address: auction.callbacks,
     functionName: "lotBuyerLimit",
     args: [parseUnits(auction.lotId, 0)],
-    query: {
-      enabled: callbacksType === CallbacksType.CAPPED_MERKLE_ALLOWLIST,
-    },
+    query: { enabled: callbacksType === CallbacksType.CAPPED_MERKLE_ALLOWLIST },
   });
   const { data: capBaseline } = useReadContract({
     abi: axisContracts.abis.baselineCappedAllowlist,
@@ -166,26 +138,13 @@ export function useAllowlist(auction: Auction): AllowlistResult {
   const [tokenAddress, threshold] = callbackResponse ??
     callbackResponseBaseline ?? [zeroAddress, BigInt(0)];
 
-  const tokenContract = {
-    address: tokenAddress,
-    abi: erc20Abi,
-  };
+  const tokenContract = { address: tokenAddress, abi: erc20Abi };
 
   const { data } = useReadContracts({
     contracts: [
-      {
-        ...tokenContract,
-        functionName: "balanceOf",
-        args: [user],
-      },
-      {
-        ...tokenContract,
-        functionName: "decimals",
-      },
-      {
-        ...tokenContract,
-        functionName: "symbol",
-      },
+      { ...tokenContract, functionName: "balanceOf", args: [user] },
+      { ...tokenContract, functionName: "decimals" },
+      { ...tokenContract, functionName: "symbol" },
     ],
     query: {
       select: (data) => data.map((r) => r.result) as [bigint, bigint, string],

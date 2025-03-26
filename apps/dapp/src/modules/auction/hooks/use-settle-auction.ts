@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import type { Auction, AuctionId } from "@axis-finance/types";
+import type { Auction } from "@axis-finance/types";
 import React, { useRef } from "react";
 import { parseUnits, toHex } from "viem";
 import {
@@ -7,7 +7,6 @@ import {
   useWaitForTransactionReceipt,
   useWriteContract,
 } from "wagmi";
-import { getAuctionQueryKey } from "modules/auction/hooks/use-auction";
 import { getAuctionHouse } from "utils/contracts";
 import { GetBatchAuctionLotQuery } from "@axis-finance/subgraph-client";
 import {
@@ -15,10 +14,7 @@ import {
   optimisticUpdate,
 } from "modules/auction/utils/optimistic";
 
-type SettleAuctionProps = {
-  auction: Auction;
-  callbackData?: `0x${string}`;
-};
+type SettleAuctionProps = { auction: Auction; callbackData?: `0x${string}` };
 
 /** Used to settle an auction after decryption*/
 export function useSettleAuction({
@@ -26,7 +22,6 @@ export function useSettleAuction({
   callbackData,
 }: SettleAuctionProps) {
   const { address, abi } = getAuctionHouse(auction);
-  const queryKey = getAuctionQueryKey(auction.id as AuctionId);
 
   const { data: settleCall, ...settleCallStatus } = useSimulateContract({
     abi,
@@ -55,6 +50,11 @@ export function useSettleAuction({
 
     settleTxnSucceeded.current = true;
 
+    const queryKey = [
+      "getBatchAuctionLotsByBaseTokenAddress",
+      { baseTokenAddress: auction.baseToken.address },
+    ];
+
     // Optimistically update the auction status to "settled"
     optimisticUpdate(
       queryClient,
@@ -62,17 +62,11 @@ export function useSettleAuction({
       (cachedAuction: GetBatchAuctionLotQuery) =>
         auctionCache.updateStatus(cachedAuction, "settled"),
     );
-  }, [settleReceipt.isSuccess, queryClient, queryKey]);
+  }, [settleReceipt.isSuccess, queryClient, auction.baseToken.address]);
 
   const error = [settleCallStatus, settleTx, settleReceipt].find(
     (tx) => tx.isError,
   )?.error;
 
-  return {
-    handleSettle,
-    settleTx,
-    settleReceipt,
-    settleCallStatus,
-    error,
-  };
+  return { handleSettle, settleTx, settleReceipt, settleCallStatus, error };
 }
