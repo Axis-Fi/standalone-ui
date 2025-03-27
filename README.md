@@ -7,6 +7,7 @@ This app is designed for projects looking to host and manage their Token Generat
 ## App Configuration
 
 - add your Token Address, Chain id and other optional metadata to `./app-config.ts`
+- [OPTIONAL] Overriding Allowlists: check `apps/dapp/src/allowlist/README.md` for how-to
 
 ## Dev Setup
 
