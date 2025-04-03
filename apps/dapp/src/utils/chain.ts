@@ -22,6 +22,8 @@ const CHAIN_NAME_MAP = {
   arbitrum: "arbitrum-one",
   mode: "mode-mainnet",
   "mantle-sepolia": "mantle-sepolia-testnet",
+  "blast-mainnet": "blast",
+  mainnet: "ethereum",
 } as const;
 
 export function getChainId(chainName?: string): number {
